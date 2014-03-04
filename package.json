@@ -11,6 +11,7 @@
     "coffee-script": "~1.7.1",
     "hogan-express": "~0.5.2",
     "mongoose": "~3.8.8",
-    "nodemon": "~1.0.15"
+    "nodemon": "~1.0.15",
+    "mongoose-auth": "0.0.12"
   }
 }
