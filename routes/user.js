@@ -4,8 +4,6 @@
     return res.send("respond with a resource");
   };
 
-  return;
-
 }).call(this);
 
 //# sourceMappingURL=user.map

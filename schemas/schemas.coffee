@@ -1,6 +1,8 @@
 mongoose = require 'mongoose'
 Schema = mongoose.Schema
 
+
+
 UserSchema.plugin mongooseAuth,
 
   # Here, we attach your User model to every module

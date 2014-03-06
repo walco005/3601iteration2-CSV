@@ -6,8 +6,6 @@
     });
   };
 
-  return;
-
 }).call(this);
 
 //# sourceMappingURL=index.map
