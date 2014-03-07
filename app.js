@@ -5,7 +5,7 @@ Module dependencies.
  */
 
 (function() {
-  var api, app, express, http, path, routes, user;
+  var api, app, express, http, login, path, routes, user;
 
   express = require("express");
 
@@ -19,7 +19,13 @@ Module dependencies.
 
   api = require("./routes/api");
 
+  login = require("./routes/login");
+
   app = express();
+
+  app.set('partials', {
+    head: 'partials/head'
+  });
 
   app.set("port", process.env.PORT || 3000);
 
@@ -54,6 +60,8 @@ Module dependencies.
   app.get("/users", user.list);
 
   app.get("/api", api.api);
+
+  app.get("/login", login.login);
 
   http.createServer(app).listen(app.get("port"), function() {
     return console.log("Express server listening on port " + app.get("port"));

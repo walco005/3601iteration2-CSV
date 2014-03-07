@@ -8,7 +8,14 @@ user = require("./routes/user")
 http = require("http")
 path = require("path")
 api = require("./routes/api")
+login = require("./routes/login")
+
 app = express()
+
+
+#expose templates to all views
+app.set 'partials',
+  head: 'partials/head'
 
 # all environments
 app.set "port", process.env.PORT or 3000
@@ -29,5 +36,6 @@ app.use express.errorHandler()  if "development" is app.get("env")
 app.get "/", routes.index
 app.get "/users", user.list
 app.get "/api", api.api
+app.get "/login", login.login
 http.createServer(app).listen app.get("port"), ->
     console.log "Express server listening on port " + app.get("port")
