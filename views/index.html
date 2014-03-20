@@ -2,9 +2,43 @@
 <html>
   <head>
       {{> head}}
+
+      <script type="text/javascript">
+          function exportToCSV() {
+              var myCSV = "grade,text\n";
+              myCSV += $("#grade").val() + ",\"" + $("#text").val() + "\"\n";
+              var r=confirm("Do you want to download the CSV?");
+              if (r==true)
+              {
+                    download($("#fileTitle").val()+".csv", myCSV);
+              }
+          }
+
+          function download(filename, text) {
+              var CSVfile = document.createElement('a');
+              CSVfile.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+              CSVfile.setAttribute('download', filename);
+              CSVfile.click();
+          }
+
+          $(document).ready(function(){
+              $("#submit").click(function(){
+                  exportToCSV();
+              });
+          });
+      </script>
   </head>
   <body>
     <h1>{{ title }}</h1>
     <p>Welcome to {{ title }}</p>
+    <label > Title:</label>
+    <input type="text" id="fileTitle">
+    <form role="form">
+        <label >Grade</label>
+        <input class="grade form-control" id="grade" placeholder="Enter Grade">
+        <label>Text</label>
+        <input class="text form-control" id="text" placeholder="Enter Text">
+        <input type="button" class="btn btn-default" id="submit" value="Submit">
+    </form>
   </body>
 </html>
