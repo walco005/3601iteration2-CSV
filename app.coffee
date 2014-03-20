@@ -9,6 +9,7 @@ http = require("http")
 path = require("path")
 api = require("./routes/api")
 login = require("./routes/login")
+csv = require("./routes/csv")
 
 app = express()
 
@@ -37,5 +38,6 @@ app.get "/", routes.index
 app.get "/users", user.list
 app.get "/api", api.api
 app.get "/login", login.login
+app.get "/csv", csv.csv
 http.createServer(app).listen app.get("port"), ->
     console.log "Express server listening on port " + app.get("port")
