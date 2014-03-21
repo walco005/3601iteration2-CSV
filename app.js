@@ -25,8 +25,11 @@ Module dependencies.
 
   app = express();
 
+  app.set('layout', 'layouts/main');
+
   app.set('partials', {
-    head: 'partials/head'
+    head: 'partials/head',
+    scripts: 'partials/scripts'
   });
 
   app.set("port", process.env.PORT || 3000);
@@ -49,7 +52,7 @@ Module dependencies.
 
   app.use(app.router);
 
-  app.use(express["static"](path.join(__dirname, "public")));
+  app.use(express["static"](path.join(__dirname, 'public')));
 
   app.use(express["static"](path.join(__dirname, 'bower_components')));
 

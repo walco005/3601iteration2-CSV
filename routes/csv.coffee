@@ -1,3 +1,5 @@
 exports.csv = (req, res) ->
   res.render "csv",
-    title: "CSV"
+    title: "Create Your CSV"
+
+    res.render 'csv'

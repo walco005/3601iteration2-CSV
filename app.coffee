@@ -13,10 +13,12 @@ csv = require("./routes/csv")
 
 app = express()
 
-
+#set main layout
+app.set 'layout', 'layouts/main'
 #expose templates to all views
 app.set 'partials',
-  head: 'partials/head'
+  head: 'partials/head',
+  scripts: 'partials/scripts'
 
 # all environments
 app.set "port", process.env.PORT or 3000
@@ -29,7 +31,7 @@ app.use express.json()
 app.use express.urlencoded()
 app.use express.methodOverride()
 app.use app.router
-app.use express.static(path.join(__dirname, "public"))
+app.use express.static(path.join(__dirname, 'public'))
 app.use express.static(path.join(__dirname, 'bower_components'))
 
 # development only
