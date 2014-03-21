@@ -2,21 +2,69 @@
     <h1>{{ title }} <small>By LightSide Labs</small></h1>
 </div>
 
-<div id="text" type="text/html">
+<div type="text/html">
     <h4>Enter your grade and essay into the appropriate text boxes</h4>
 </div>
 
 <div class="row">
+
     <div>
         <h3>CSV</h3>
     </div>
 
-    <div id="gradeEssay">
-        <form>
-            Grade <input type="text" name="Grade">
-            Essay <input type="text" name="Essay">
-        </form>
-    </div>
-    <br>
-    <button class="addEssay btn btn-info btn-sm">Add Essay</button>
+    <form role="form">
+        <label > Title:</label>
+        <input class="form-control" id="fileTitle" placeholder="Enter Title of CSV File">
+        <br />
+        <label >Grade</label>
+        <input class="grade form-control" id="grade" placeholder="Enter Grade">
+        <label>Text</label>
+        <input class="text form-control" id="text" placeholder="Enter Text">
+        <input type="button" class="btn btn-default" id="add" value="Add">
+        <input type="button" class="btn btn-default" id="submit" value="Submit">
+    </form>
 </div>
+    <label>Documents Added:</label>
+    <p id="documentsAdded"></p>
+
+<script type="text/javascript">
+    var myCSV = "grade,text\n";
+    var documentsAdded = 1
+    function exportToCSV() {
+        if (($("#grade").val() != "") && ($("#text").val() != "")) {
+            myCSV += $("#grade").val() + ",\"" + $("#text").val() + "\"\n";
+        }
+        var r=confirm("Do you want to download the CSV?");
+        if (r==true)
+        {
+            download($("#fileTitle").val()+".csv", myCSV);
+        }
+    }
+
+    function download(filename, text) {
+        var CSVfile = document.createElement('a');
+        CSVfile.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        CSVfile.setAttribute('download', filename);
+        CSVfile.click();
+    }
+
+    function addEssay() {
+        myCSV += $("#grade").val() + ",\"" + $("#text").val() + "\"\n";
+        $("#grade").val("")
+        $("#text").val("")
+        $("#documentsAdded").val(documentsAdded)
+        documentsAdded++
+    }
+
+    $(document).ready(function(){
+        $("#submit").click(function(){
+            console.log("in submit");
+            exportToCSV();
+        });
+
+        $("#add").click(function(){
+            console.log("in add");
+            addEssay();
+        });
+    });
+</script>
