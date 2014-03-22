@@ -20,12 +20,14 @@
         <input class="grade form-control" id="grade" placeholder="Enter Grade">
         <label>Text</label>
         <input class="text form-control" id="text" placeholder="Enter Text">
+        <br>
         <input type="button" class="btn btn-default" id="add" value="Add">
         <input type="button" class="btn btn-default" id="submit" value="Submit">
     </form>
 </div>
-    <label>Documents Added:</label>
-    <p id="documentsAdded"></p>
+    <br>
+    <label style="float: left">Documents Added: </label>
+    <p id="documentAmount" style="float:left;margin-left: 5px">0<p>
 
 <script type="text/javascript">
     var myCSV = "grade,text\n";
@@ -33,6 +35,8 @@
     function exportToCSV() {
         if (($("#grade").val() != "") && ($("#text").val() != "")) {
             myCSV += $("#grade").val() + ",\"" + $("#text").val() + "\"\n";
+            $("#grade").val("")
+            $("#text").val("")
         }
         var r=confirm("Do you want to download the CSV?");
         if (r==true)
@@ -52,7 +56,8 @@
         myCSV += $("#grade").val() + ",\"" + $("#text").val() + "\"\n";
         $("#grade").val("")
         $("#text").val("")
-        $("#documentsAdded").val(documentsAdded)
+        docs = document.getElementById("documentAmount")
+        docs.innerHTML = documentsAdded
         documentsAdded++
     }
 
