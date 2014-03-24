@@ -13,8 +13,9 @@
     </div>
 
     <form role="form">
-        <label > Title:</label>
+        <label > Title</label>
         <input class="form-control" id="fileTitle" placeholder="Enter Title of CSV File">
+        <br />
         <br />
         <label >Grade</label>
         <input class="grade form-control" id="grade" placeholder="Enter Grade">
@@ -37,8 +38,10 @@
         if (($("#grade").val() != "") || ($("#text").val() != "")) {
             addEssay();
         }
-        var r=confirm("Do you want to download the CSV?");
-        if (r==true)
+        if(documentsAdded == 0){
+            window.alert("Please add some papers");
+        }
+        else if (confirm("Do you want to download the CSV?"))
         {
             download($("#fileTitle").val()+".csv", myCSV);
         }
@@ -68,12 +71,14 @@
     }
 
     function reset(){
-        myCSV = "grade,text\n";
-        documentsAdded = 0;
-        document.getElementById("documentAmount").innerHTML = documentsAdded;
-        $("#grade").val("");
-        $("#text").val("");
-        $("#fileTitle").val("");
+        if(confirm("Are you sure you want to reset?")){
+            myCSV = "grade,text\n";
+            documentsAdded = 0;
+            document.getElementById("documentAmount").innerHTML = documentsAdded;
+            $("#grade").val("");
+            $("#text").val("");
+            $("#fileTitle").val("");
+        }
     }
 
     $(document).ready(function(){
