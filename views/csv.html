@@ -3,17 +3,19 @@
 </div>
 
 <div type="text/html">
-    <h4>If you refresh the page, everything will be reset</h4>
-    <ul><li>To use the Create Your CSV page, you need to input text into each of the boxes.
-    Your CSV requires a title that will appear in the CSV.  You must also include a grade in the
-    "Grade" text box as well as text in the "Text" box.  Otherwise, you will not be able to add the grade
-    and text into the file.</li>
-    <li>The "Reset" button allows you to completely erase any text you have entered or added.</li>
-    <li>The "Add" button allows you to add the document into your CSV file.  When you press the button,
-    the "Documents Added:" will count the amount of documents that have been added into the CSV file.</li>
-    <li>The "Download CSV" button downloads the CSV file where you can open (via clicking the file) and
-    looking the documents inside of the CSV.  And if you wish to add more files, you may do so and
-    it will still have your documents that you have initially added.</li></ul>
+    <h4>If you refresh the page, all entered text will be deleted</h4>
+    <ul>
+        <li>To use the Create Your CSV page, you need to input text into each of the boxes.
+        Your CSV requires a title that will appear in the CSV.  You must also include a grade in the
+        "Grade" text box as well as text in the "Text" box.  Otherwise, you will not be able to add the grade
+        and text into the file.</li>
+        <li>The "Reset" button allows you to completely erase any text you have entered or added.</li>
+        <li>The "Add" button allows you to add the document into your CSV file.  When you press the button,
+        the "Documents Added:" will count the amount of documents that have been added into the CSV file.</li>
+        <li>The "Download CSV" button downloads the CSV file where you can open (via clicking the file) and
+        looking the documents inside of the CSV.  And if you wish to add more files, you may do so and
+        it will still have your documents that you have initially added.</li>
+    </ul>
 </div>
 
 <div class="row">
@@ -23,23 +25,25 @@
     </div>
 
     <form role="form">
-        <label > Title</label>
+        <label> Title</label>
         <input class="form-control" id="fileTitle" placeholder="Enter Title of CSV File">
         <br />
         <br />
-        <label >Grade</label>
+        <label>Grade</label>
         <input class="grade form-control" id="grade" placeholder="Enter Grade">
         <label>Text</label>
         <input class="text form-control" id="text" placeholder="Enter Text">
         <br>
-        <input type="button" class="btn btn-default" id="reset" value="Reset">
+        <input type="button" class="btn btn-danger" id="reset" value="Reset">
         <input type="button" class="btn btn-default" id="add" value="Add">
         <input type="button" class="btn btn-default" id="submit" value="Download CSV">
     </form>
 </div>
     <br>
-    <label style="float: left">Documents Added: </label>
-    <p id="documentAmount" style="float:left;margin-left: 5px">0<p>
+<div>
+    <p style="display:inline;"><strong>Documents Added:</strong></p>
+    <p style="display:inline;" id="documentAmount">0</p>
+</div>
 
 <script type="text/javascript">
     var myCSV = "grade,text\n";
