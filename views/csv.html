@@ -34,19 +34,13 @@
     var myCSV = "grade,text\n";
     var documentsAdded = 0;
     function exportToCSV() {
-        if (($("#grade").val() != "") && ($("#text").val() != "")) {
-            documentsAdded++;
-            docs = document.getElementById("documentAmount").innerHTML = documentsAdded;
-            myCSV += $("#grade").val() + ",\"" + $("#text").val() + "\"\n";
-            $("#grade").val("");
-            $("#text").val("");
+        if (($("#grade").val() != "") || ($("#text").val() != "")) {
+            addEssay();
         }
-        var r = confirm("Do you want to download the CSV?");
-        if (r == true)
+        var r=confirm("Do you want to download the CSV?");
+        if (r==true)
         {
             download($("#fileTitle").val()+".csv", myCSV);
-            myCSV = "grade,text\n";
-            documentsAdded = 0;
         }
     }
 
@@ -58,20 +52,28 @@
     }
 
     function addEssay() {
-        myCSV += $("#grade").val() + ",\"" + $("#text").val() + "\"\n";
-        $("#grade").val("");
-        $("#text").val("");
-        documentsAdded++;
-        docs = document.getElementById("documentAmount").innerHTML = documentsAdded;
+        if($("#grade").val() == ""){
+            window.alert("Please enter a grade for the paper");
+        }
+        else if($("#text").val() == ""){
+            window.alert("Please enter the text of the paper");
+        }
+        else{
+            myCSV += $("#grade").val() + ",\"" + $("#text").val() + "\"\n";
+            documentsAdded++;
+            $("#grade").val("");
+            $("#text").val("");
+            document.getElementById("documentAmount").innerHTML = documentsAdded;
+        }
     }
 
-    function reset() {
+    function reset(){
         myCSV = "grade,text\n";
         documentsAdded = 0;
         document.getElementById("documentAmount").innerHTML = documentsAdded;
-        $("#fileTitle").val("");
         $("#grade").val("");
         $("#text").val("");
+        $("#fileTitle").val("");
     }
 
     $(document).ready(function(){
@@ -85,6 +87,6 @@
 
         $("#reset").click(function(){
             reset();
-        });
+        })
     });
 </script>
