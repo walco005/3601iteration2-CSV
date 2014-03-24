@@ -21,8 +21,9 @@
         <label>Text</label>
         <input class="text form-control" id="text" placeholder="Enter Text">
         <br>
+        <input type="button" class="btn btn-default" id="reset" value="Reset">
         <input type="button" class="btn btn-default" id="add" value="Add">
-        <input type="button" class="btn btn-default" id="submit" value="Submit">
+        <input type="button" class="btn btn-default" id="submit" value="Download CSV">
     </form>
 </div>
     <br>
@@ -31,17 +32,21 @@
 
 <script type="text/javascript">
     var myCSV = "grade,text\n";
-    var documentsAdded = 1
+    var documentsAdded = 0;
     function exportToCSV() {
         if (($("#grade").val() != "") && ($("#text").val() != "")) {
+            documentsAdded++;
+            docs = document.getElementById("documentAmount").innerHTML = documentsAdded;
             myCSV += $("#grade").val() + ",\"" + $("#text").val() + "\"\n";
-            $("#grade").val("")
-            $("#text").val("")
+            $("#grade").val("");
+            $("#text").val("");
         }
-        var r=confirm("Do you want to download the CSV?");
-        if (r==true)
+        var r = confirm("Do you want to download the CSV?");
+        if (r == true)
         {
             download($("#fileTitle").val()+".csv", myCSV);
+            myCSV = "grade,text\n";
+            documentsAdded = 0;
         }
     }
 
@@ -54,22 +59,32 @@
 
     function addEssay() {
         myCSV += $("#grade").val() + ",\"" + $("#text").val() + "\"\n";
-        $("#grade").val("")
-        $("#text").val("")
-        docs = document.getElementById("documentAmount")
-        docs.innerHTML = documentsAdded
-        documentsAdded++
+        $("#grade").val("");
+        $("#text").val("");
+        documentsAdded++;
+        docs = document.getElementById("documentAmount").innerHTML = documentsAdded;
+    }
+
+    function reset() {
+        myCSV = "grade,text\n";
+        documentsAdded = 0;
+        document.getElementById("documentAmount").innerHTML = documentsAdded;
+        $("#fileTitle").val("");
+        $("#grade").val("");
+        $("#text").val("");
     }
 
     $(document).ready(function(){
         $("#submit").click(function(){
-            console.log("in submit");
             exportToCSV();
         });
 
         $("#add").click(function(){
-            console.log("in add");
             addEssay();
+        });
+
+        $("#reset").click(function(){
+            reset();
         });
     });
 </script>
