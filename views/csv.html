@@ -58,10 +58,8 @@
     }
 
     function download(filename, text) {
-        var CSVfile = document.createElement('a');
-        CSVfile.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(text));
-        CSVfile.setAttribute('download', filename);
-        CSVfile.click();
+        var blob = new Blob([myCSV], {type: "text/csv;charset=utf-8"});
+        saveAs(blob, $("#fileTitle").val()+".csv");
     }
 
     function addEssay() {
