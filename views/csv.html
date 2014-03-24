@@ -59,19 +59,19 @@
 
     function download(filename, text) {
         var CSVfile = document.createElement('a');
-        CSVfile.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        CSVfile.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(text));
         CSVfile.setAttribute('download', filename);
         CSVfile.click();
     }
 
     function addEssay() {
-        if($("#grade").val() == ""){
+        if ($("#grade").val() == "") {
             window.alert("Please enter a grade for the paper");
         }
-        else if($("#text").val() == ""){
+        else if ($("#text").val() == "") {
             window.alert("Please enter the text of the paper");
         }
-        else{
+        else {
             myCSV += $("#grade").val() + ",\"" + $("#text").val() + "\"\n";
             documentsAdded++;
             $("#grade").val("");
@@ -80,8 +80,8 @@
         }
     }
 
-    function reset(){
-        if(confirm("Are you sure you want to reset?")){
+    function reset() {
+        if (confirm("Are you sure you want to reset?")) {
             myCSV = "grade,text\n";
             documentsAdded = 0;
             document.getElementById("documentAmount").innerHTML = documentsAdded;
@@ -91,16 +91,16 @@
         }
     }
 
-    $(document).ready(function(){
-        $("#submit").click(function(){
+    $(document).ready(function() {
+        $("#submit").click(function() {
             exportToCSV();
         });
 
-        $("#add").click(function(){
+        $("#add").click(function() {
             addEssay();
         });
 
-        $("#reset").click(function(){
+        $("#reset").click(function() {
             reset();
         })
     });
