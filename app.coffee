@@ -4,11 +4,8 @@ Module dependencies.
 ###
 express = require("express")
 routes = require("./routes")
-user = require("./routes/user")
 http = require("http")
 path = require("path")
-api = require("./routes/api")
-login = require("./routes/login")
 csv = require("./routes/csv")
 
 app = express()
@@ -37,9 +34,6 @@ app.use express.static(path.join(__dirname, 'bower_components'))
 # development only
 app.use express.errorHandler()  if "development" is app.get("env")
 app.get "/", routes.index
-app.get "/users", user.list
-app.get "/api", api.api
-app.get "/login", login.login
 app.get "/csv", csv.csv
 http.createServer(app).listen app.get("port"), ->
     console.log "Express server listening on port " + app.get("port")

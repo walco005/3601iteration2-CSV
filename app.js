@@ -5,21 +5,15 @@ Module dependencies.
  */
 
 (function() {
-  var api, app, csv, express, http, login, path, routes, user;
+  var app, csv, express, http, path, routes;
 
   express = require("express");
 
   routes = require("./routes");
 
-  user = require("./routes/user");
-
   http = require("http");
 
   path = require("path");
-
-  api = require("./routes/api");
-
-  login = require("./routes/login");
 
   csv = require("./routes/csv");
 
@@ -61,12 +55,6 @@ Module dependencies.
   }
 
   app.get("/", routes.index);
-
-  app.get("/users", user.list);
-
-  app.get("/api", api.api);
-
-  app.get("/login", login.login);
 
   app.get("/csv", csv.csv);
 
