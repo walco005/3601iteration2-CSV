@@ -1,4 +1,4 @@
-3601iteration1
+3601iteration2-CSV
 ==============
 
-CSci 3601 iteration 1 for the client project.
+CSci 3601 iteration 2 for the client project.
