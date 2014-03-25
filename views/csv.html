@@ -3,7 +3,7 @@
 </div>
 
 <div type="text/html">
-    <h4>If you refresh the page, all entered text will be deleted</h4>
+    <h4>If you refresh the page, all entered text will be deleted.</h4>
     <ul>
         <li>To use the Create Your CSV page, you need to input text into each of the boxes.
         Your CSV requires a title that will appear in the CSV.  You must also include a grade in the
@@ -48,6 +48,9 @@
 
 
 <script type="text/javascript">
+    window.onbeforeunload = function() {
+        return "WARNING: Reloading the page will restart the process!";
+    };
     var myCSV = "grade,text\n";
     var documentsAdded = 0;
     function exportToCSV() {
@@ -123,6 +126,7 @@
             $("#grade").val("");
             $("#text").val("");
             $("#fileTitle").val("");
+            document.getElementById("pastDocs").innerHTML = "";
         }
     }
 
