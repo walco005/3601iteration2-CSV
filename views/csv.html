@@ -32,7 +32,7 @@
         <label>Grade</label>
         <input class="grade form-control" id="grade" placeholder="Enter Grade">
         <label>Text</label>
-        <input class="text form-control" id="text" placeholder="Enter Text">
+        <textarea class="text form-control" id="text" placeholder="Enter Text" rows="10"></textarea>
         <br>
         <input type="button" class="btn btn-danger" id="reset" value="Reset">
         <input type="button" class="btn btn-default" id="add" value="Add">
@@ -44,6 +44,8 @@
     <p style="display:inline;"><strong>Documents Added:</strong></p>
     <p style="display:inline;" id="documentAmount">0</p>
 </div>
+<div id="pastDocs"></div>
+
 
 <script type="text/javascript">
     var myCSV = "grade,text\n";
@@ -74,11 +76,42 @@
             window.alert("Please enter the text of the paper");
         }
         else {
-            myCSV += $("#grade").val() + ",\"" + $("#text").val() + "\"\n";
+            myCSV += $("#grade").val() + ",\"" + $("#text").val().replace(/"/g,"'") + "\"\n";
             documentsAdded++;
             $("#grade").val("");
             $("#text").val("");
             document.getElementById("documentAmount").innerHTML = documentsAdded;
+            document.getElementById("pastDocs").innerHTML += "<div class='docBox' id ='docBox' >" + documentsAdded + "</div>";
+
+            $(".docBox").slideDown(130);
+            $(".docBox").mouseover(function() {
+                $(this).css("background-color","midnightblue");
+                $(this).css("color","white");
+            });
+            $(".docBox").mouseout(function() {
+                $(this).css("background-color","lightblue");
+                $(this).css("color","black");
+            });
+            /*This isn't working yet:*/
+
+            /*$(".docBox").click(function() {
+                var counter = 0;
+                var limit = (parseInt($(this).text()) - 1) * 2 - 1;
+                for(var i = 0; i < bingo.length; i++) {
+                    if (bingo.charAt(i) == '"') {
+                        if (counter < limit) counter++;
+                        else {
+                            var grade = bingo.substring(i, bingo.indexOf('"',i ));
+                            console.log(i + " " + bingo.indexOf('"',i + 1));
+                            var text = bingo.substring(i + grade.length, bingo.indexOf('"', i + grade.length + 1));
+                            console.log(grade);
+                            console.log(text);
+                             $("#grade").val(grade);
+                             $("#text").val(text);
+                             return;
+                        }
+                    }
+             }*/
         }
     }
 
