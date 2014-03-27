@@ -17,21 +17,13 @@
         it will still have your documents that you have initially added.</li>
     </ul>
 </div>
-
-<div class="row">
-
-    <div>
-        <h3>CSV</h3>
-    </div>
-
+<div id="fieldNames">
     <form role="form">
-        <label> Title</label>
-        <input class="form-control" id="fileTitle" placeholder="Enter Title of CSV File">
-        <br />
-        <br />
         <div class="btn-group" id="addFieldsSelector">
+            <label>Choose number of fields to enter for each document</label>
+            <br />
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                Choose Number of Fields <span class="caret"></span>
+                Number of Fields <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
                 <li><a onclick="addFields(1)">1 Field</a></li>
@@ -43,7 +35,15 @@
             <br />
             <br />
         </div>
-        <div id="moreFields"></div>
+    </form>
+    <div id="moreFields"></div>
+    <button class="btn btn-default glyphicon glyphicon-saved" id="saveFields">Save</button>
+</div>
+<div id="workZone" class="row">
+    <form role="form">
+        <label> Title</label>
+        <input class="form-control" id="fileTitle" placeholder="Enter Title of CSV File">
+        <br />
         <label>Text</label>
         <textarea class="text form-control" id="text" placeholder="Enter Text" rows="10"></textarea>
         <br>
@@ -51,14 +51,11 @@
         <input type="button" class="btn btn-default" id="add" value="Add">
         <input type="button" class="btn btn-default" id="submit" value="Download CSV">
     </form>
-</div>
-    <br>
-<div>
     <p style="display:inline;"><strong>Documents Added:</strong></p>
     <p style="display:inline;" id="documentAmount">0</p>
+    <br />
+    <div id="pastDocs"></div>
 </div>
-<div id="pastDocs"></div>
-
 
 <script type="text/javascript">
 /*
@@ -70,10 +67,11 @@
     var myCSV = "field1,text\n";
     var documentsAdded = 0;
     function exportToCSV() {
+
         if (($("#field1").val() != "") || ($("#text").val() != "")) {
             addEssay();
         }
-        if(documentsAdded == 0){
+        if (documentsAdded == 0){
             window.alert("Please add some papers");
         }
         else if (confirm("Do you want to download the CSV?"))
@@ -92,7 +90,8 @@
             window.alert("Please enter<label>Fields</label> a field for the paper");
         }
         else if ($("#text").val() == "") {
-            window.alert("Please enter the text of the paper");
+            window.alert("Please enter the text of the paper");Merged
+
         }
         else {
             myCSV += $("#field1").val() + ",\"" + $("#text").val().replace(/"/g,"'") + "\"\n";
@@ -154,10 +153,12 @@
             temp += template1 + i + template2;
         }
         document.getElementById("moreFields").innerHTML=temp;
-        $("#addFieldsSelector").hide();
+        $("#saveFields").show();
     }
 
     $(document).ready(function() {
+        $("#saveFields").hide();
+        $("#workZone").hide();
         $("#submit").click(function() {
             exportToCSV();
         });
