@@ -16,6 +16,7 @@ app.set 'layout', 'layouts/main'
 app.set 'partials',
   head: 'partials/head',
   scripts: 'partials/scripts'
+  fieldsForCSV: 'partials/fieldsForCSV'
 
 # all environments
 app.set "port", process.env.PORT or 3000

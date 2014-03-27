@@ -29,8 +29,21 @@
         <input class="form-control" id="fileTitle" placeholder="Enter Title of CSV File">
         <br />
         <br />
-        <label>Grade</label>
-        <input class="grade form-control" id="grade" placeholder="Enter Grade">
+        <div class="btn-group" id="addFieldsSelector">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                Choose Number of Fields <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a onclick="addFields(1)">1 Field</a></li>
+                <li><a onclick="addFields(2)">2 Fields</a></li>
+                <li><a onclick="addFields(3)">3 Fields</a></li>
+                <li><a onclick="addFields(4)">4 Fields</a></li>
+                <li><a onclick="addFields(5)">5 Fields</a></li>
+            </ul>
+            <br />
+            <br />
+        </div>
+        <div id="moreFields"></div>
         <label>Text</label>
         <textarea class="text form-control" id="text" placeholder="Enter Text" rows="10"></textarea>
         <br>
@@ -51,13 +64,13 @@
 /*
     REFRESH WARNING:
 */
-    /*window.onbeforeunload = function() {
-        return "WARNING: Reloading the page will restart the process!";
-    };*/
-    var myCSV = "grade,text\n";
+//    window.onbeforeunload = function() {
+//        return "WARNING: Reloading the page will restart the process and you will lose all of your data!";
+//    };
+    var myCSV = "field1,text\n";
     var documentsAdded = 0;
     function exportToCSV() {
-        if (($("#grade").val() != "") || ($("#text").val() != "")) {
+        if (($("#field1").val() != "") || ($("#text").val() != "")) {
             addEssay();
         }
         if(documentsAdded == 0){
@@ -75,16 +88,16 @@
     }
 
     function addEssay() {
-        if ($("#grade").val() == "") {
-            window.alert("Please enter a grade for the paper");
+        if ($("#field1").val() == "") {
+            window.alert("Please enter<label>Fields</label> a field for the paper");
         }
         else if ($("#text").val() == "") {
             window.alert("Please enter the text of the paper");
         }
         else {
-            myCSV += $("#grade").val() + ",\"" + $("#text").val().replace(/"/g,"'") + "\"\n";
+            myCSV += $("#field1").val() + ",\"" + $("#text").val().replace(/"/g,"'") + "\"\n";
             documentsAdded++;
-            $("#grade").val("");
+            $("#field1").val("");
             $("#text").val("");
             document.getElementById("documentAmount").innerHTML = documentsAdded;
             document.getElementById("pastDocs").innerHTML += "<div class='docBox' id ='docBox' >" + documentsAdded + "</div>";
@@ -123,14 +136,25 @@
 
     function reset() {
         if (confirm("Are you sure you want to reset?")) {
-            myCSV = "grade,text\n";
+            myCSV = "field1,text\n";
             documentsAdded = 0;
             document.getElementById("documentAmount").innerHTML = documentsAdded;
-            $("#grade").val("");
+            $("#field1").val("");
             $("#text").val("");
             $("#fileTitle").val("");
             document.getElementById("pastDocs").innerHTML = "";
         }
+    }
+
+    function addFields(numToAdd) {
+        var template1 = '<input class="field form-control" id="field';
+        var template2 = '" placeholder="Enter Field Name (Ex: Grade)">\n';
+        var temp = "<label>Fields</label>";
+        for (var i = 2; i < numToAdd + 2; i++) {
+            temp += template1 + i + template2;
+        }
+        document.getElementById("moreFields").innerHTML=temp;
+        $("#addFieldsSelector").hide();
     }
 
     $(document).ready(function() {
