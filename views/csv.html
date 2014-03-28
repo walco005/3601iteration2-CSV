@@ -44,9 +44,11 @@
         <label> Title</label>
         <input class="form-control" id="fileTitle" placeholder="Enter Title of CSV File">
         <br />
+        <div id="fieldScores"></div>
+
         <label>Text</label>
         <textarea class="text form-control" id="text" placeholder="Enter Text" rows="10"></textarea>
-        <br>
+        <br />
         <input type="button" class="btn btn-danger" id="reset" value="Reset">
         <input type="button" class="btn btn-default" id="add" value="Add">
         <input type="button" class="btn btn-default" id="submit" value="Download CSV">
@@ -64,7 +66,7 @@
 //    window.onbeforeunload = function() {
 //        return "WARNING: Reloading the page will restart the process and you will lose all of your data!";
 //    };
-    var myCSV = "field1,text\n";
+    var myCSV = "";
     var documentsAdded = 0;
     var numFields;
     var fieldNames = [];
@@ -87,7 +89,7 @@
     }
 
     function addEssay() {
-        if ($("#field1").val() == "") {
+        if ($("#toScore1").val() == "") {
             window.alert("Please enter<label>Fields</label> a field for the paper");
         }
         else if ($("#text").val() == "") {
@@ -95,9 +97,9 @@
 
         }
         else {
-            myCSV += $("#field1").val() + ",\"" + $("#text").val().replace(/"/g,"'") + "\"\n";
+            myCSV += $("#toScore1").val() + ",\"" + $("#text").val().replace(/"/g,"'") + "\"\n";
             documentsAdded++;
-            $("#field1").val("");
+            $("#toScore1").val("");
             $("#text").val("");
             document.getElementById("documentAmount").innerHTML = documentsAdded;
             document.getElementById("pastDocs").innerHTML += "<div class='docBox' id ='docBox' >" + documentsAdded + "</div>";
@@ -148,8 +150,8 @@
 
     function addFields(numToAdd) {
         numFields = numToAdd;
-        var template1 = '<input class="field form-control" id="field';
-        var template2 = '" placeholder="Enter Field Name (Ex: Grade)">\n';
+        var template1 = '<div class="fields">\n</div><input class="field form-control" id="field';
+        var template2 = '" placeholder="Enter Field Name (Ex: Grade)">\n</div>\n';
         var temp = "<label>Fields</label>";
         for (var i = 1; i < numToAdd + 1; i++) {
             temp += template1 + i + template2;
@@ -161,8 +163,19 @@
     function saveFields() {
         for (var i = 1; i <= numFields; i++) {
             fieldNames.push($("#field" + i + "").val());
+            myCSV += $("#field" + i + "").val() + ",";
             console.log(fieldNames);
         }
+        var template1 = '<div class="input-group fields">\n<span class="input-group-addon">';
+        var template2 = '</span>\n<input type="text" class="form-control" id="toScore';
+        var template3 = '"placeholder="Enter ';
+        var template4 = '">\n</div>\n';
+        var temp = "<label>Scores</label>";
+        for (var i = 1; i < numFields+ 1; i++) {
+            temp += template1 + fieldNames[i-1] + template2 + i + template3 + fieldNames[i-1] + template4;
+        }
+        document.getElementById("fieldScores").innerHTML=temp;
+        myCSV += "text\r\n"
         $("#fieldNames").hide();
         $("#workZone").show();
     }
