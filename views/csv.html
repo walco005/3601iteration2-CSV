@@ -66,8 +66,9 @@
 //    };
     var myCSV = "field1,text\n";
     var documentsAdded = 0;
+    var numFields;
+    var fieldNames = [];
     function exportToCSV() {
-
         if (($("#field1").val() != "") || ($("#text").val() != "")) {
             addEssay();
         }
@@ -146,19 +147,30 @@
     }
 
     function addFields(numToAdd) {
+        numFields = numToAdd;
         var template1 = '<input class="field form-control" id="field';
         var template2 = '" placeholder="Enter Field Name (Ex: Grade)">\n';
         var temp = "<label>Fields</label>";
-        for (var i = 2; i < numToAdd + 2; i++) {
+        for (var i = 1; i < numToAdd + 1; i++) {
             temp += template1 + i + template2;
         }
         document.getElementById("moreFields").innerHTML=temp;
         $("#saveFields").show();
     }
 
+    function saveFields() {
+        for (var i = 1; i <= numFields; i++) {
+            fieldNames.push($("#field" + i + "").val());
+            console.log(fieldNames);
+        }
+        $("#fieldNames").hide();
+        $("#workZone").show();
+    }
+
     $(document).ready(function() {
         $("#saveFields").hide();
         $("#workZone").hide();
+
         $("#submit").click(function() {
             exportToCSV();
         });
@@ -169,6 +181,10 @@
 
         $("#reset").click(function() {
             reset();
-        })
+        });
+
+        $("#saveFields").click(function() {
+               saveFields();
+        });
     });
 </script>
