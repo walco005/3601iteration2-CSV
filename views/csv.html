@@ -71,9 +71,6 @@
     var numFields;
     var fieldNames = [];
     function exportToCSV() {
-        if (($("#field1").val() != "") || ($("#text").val() != "")) {
-            addEssay();
-        }
         if (documentsAdded == 0){
             window.alert("Please add some papers");
         }
@@ -88,31 +85,46 @@
         saveAs(blob, $("#fileTitle").val()+".csv");
     }
 
-    function addEssay() {
-        if ($("#toScore1").val() == "") {
-            window.alert("Please enter<label>Fields</label> a field for the paper");
+    function emptyFields() {
+        for (var i = 1; i <= numFields; i++) {
+            if ($("#toScore" + i + "").val() == "") {
+                return true;
+            }
         }
-        else if ($("#text").val() == "") {
-            window.alert("Please enter the text of the paper");Merged
+        if ($("#text").val() == "") {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-        }
-        else {
-            myCSV += $("#toScore1").val() + ",\"" + $("#text").val().replace(/"/g,"'") + "\"\n";
+    function add() {
+        console.log("in add")
+        if (emptyFields() == true) {
+            window.alert("Please fill all fields for the text");
+        } else {
+            for (var i = 1; i <= numFields; i++) {
+                myCSV += $("#toScore" + i + "").val() + ",";
+            }
+            myCSV += "\"" + $("#text").val().replace(/"/g,"'") + "\"\r\n";
             documentsAdded++;
-            $("#toScore1").val("");
+            for (var i = 1; i <= numFields; i++) {
+                $("#toScore" + i + "").val("");
+            }
             $("#text").val("");
             document.getElementById("documentAmount").innerHTML = documentsAdded;
-            document.getElementById("pastDocs").innerHTML += "<div class='docBox' id ='docBox' >" + documentsAdded + "</div>";
 
-            $(".docBox").slideDown(130);
-            $(".docBox").mouseover(function() {
-                $(this).css("background-color","midnightblue");
-                $(this).css("color","white");
-            });
-            $(".docBox").mouseout(function() {
-                $(this).css("background-color","lightblue");
-                $(this).css("color","black");
-            });
+//            document.getElementById("pastDocs").innerHTML += "<div class='docBox' id ='docBox' >" + documentsAdded + "</div>";
+//
+//            $(".docBox").slideDown(130);
+//            $(".docBox").mouseover(function() {
+//                $(this).css("background-color","midnightblue");
+//                $(this).css("color","white");
+//            });
+//            $(".docBox").mouseout(function() {
+//                $(this).css("background-color","lightblue");
+//                $(this).css("color","black");
+//            });
             /*This isn't working yet:*/
 
             /*$(".docBox").click(function() {
@@ -138,13 +150,20 @@
 
     function reset() {
         if (confirm("Are you sure you want to reset?")) {
-            myCSV = "field1,text\n";
+            myCSV = "";
             documentsAdded = 0;
             document.getElementById("documentAmount").innerHTML = documentsAdded;
-            $("#field1").val("");
+            numFields = 0;
+            fieldNames = [];
             $("#text").val("");
             $("#fileTitle").val("");
             document.getElementById("pastDocs").innerHTML = "";
+            document.getElementById("moreFields").innerHTML = "";
+            document.getElementById("fieldScores").innerHTML = "";
+            $("#moreFields").show();
+            $("#saveFields").hide();
+            $("#workZone").hide();
+            $("#fieldNames").show();
         }
     }
 
@@ -181,6 +200,7 @@
     }
 
     $(document).ready(function() {
+        console.log("iuegfiuwohiuweouir");
         $("#saveFields").hide();
         $("#workZone").hide();
 
@@ -189,7 +209,7 @@
         });
 
         $("#add").click(function() {
-            addEssay();
+            add();
         });
 
         $("#reset").click(function() {
@@ -197,7 +217,7 @@
         });
 
         $("#saveFields").click(function() {
-               saveFields();
+            saveFields();
         });
     });
 </script>
