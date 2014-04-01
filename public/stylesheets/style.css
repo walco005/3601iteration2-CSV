@@ -10,7 +10,13 @@ a {
 .fields {
     padding-bottom: 5px;
 }
+
+#reset {
+    float: right;
+}
+
 .docBox {
+    border-radius: 5px;
     font-family:"Sans-serif", Arial, sans-serif;
     font-size:1.15em;
     color:black;
