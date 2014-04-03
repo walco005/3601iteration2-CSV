@@ -11,10 +11,12 @@ var numFields;
 var fieldNames = [];
 var selected = 0;
 
+//Much of this function was found here: http://stackoverflow.com/questions/1431094/how-do-i-replace-a-character-at-a-particular-index-in-javascript
 function replaceAt(str, start, end, text) {
     return str.substring(0, start) + text + str.substring(end + 1);
 }
 
+//If no documents have been added, prompts user to add documents. Else it asks for confirmation of download, then runs the download method.
 function exportToCSV() {
     if (documentsAdded == 0){
         window.alert("Please add some documents");
@@ -25,11 +27,13 @@ function exportToCSV() {
     }
 }
 
+//Uses "filesaver.js" and "blob.js" to export string and download.
 function download(filename, text) {
     var blob = new Blob([myCSV], {type: "text/csv;charset=utf-8"});
     saveAs(blob, $("#fileTitle").val()+".csv");
 }
 
+//Returns true or false. False if all fields and text area have contents.
 function emptyFields() {
     for (var i = 1; i <= numFields; i++) {
         if ($("#toScore" + i + "").val() == "") {
@@ -43,52 +47,55 @@ function emptyFields() {
     }
 }
 
-function resetButtons() {
+//Hides cancel and replace, shows submit and add.
+function editButtons() {
     $("#cancel").slideUp();
     $("#replace").slideUp();
     $("#submit").slideDown();
     $("#add").slideDown();
 }
 
+//Hides submit and add, shows cancel and replace.
+function addingButtons() {
+    $("#add").slideUp();
+    $("#submit").slideUp();
+    $("#replace").slideDown();
+    $("#cancel").slideDown();
+}
+
 function add() {
-    if (emptyFields() == true) {
+    /***************************/
+
+    if (emptyFields() == true) {                             //If any of the fields/text areas are empty, will alert the user.
         window.alert("Please fill all fields for the text");
-    } else {
+    } else {                                                 //If all fields are populated will add the entry.
         for (var i = 1; i <= numFields; i++) {
             myCSV += $("#toScore" + i + "").val() + ",";
         }
-        myCSV += "\"" + $("#text").val().replace(/"/g,"'") + "\"\r\n";
+        myCSV += "\"" + $("#text").val().replace(/"/g,"'") + "\"\r\n"; //Adds the string in the text area to myCSV string, replacing double quotes with single quotes.
         documentsAdded++;
-        clearAllFields()
+        clearAllFields();
         document.getElementById("documentAmount").innerHTML = documentsAdded;
 
-        document.getElementById("pastDocs").innerHTML += "<div class='docBox' id ='docBox' >" + documentsAdded + "</div>";
+    /***************************/
+        document.getElementById("pastDocs").innerHTML += "<div class='docBox' id ='docBox' >" + documentsAdded + "</div>"; //Adds boxes of past entries.
 
         $(".docBox").slideDown(130);
-        $(".docBox").mouseover(function() {
+        $(".docBox").mouseover(function() { //Hover effect.
             if (parseInt($(this).text()) != selected) {
-                $(this).css("background-color","midnightblue");
-                $(this).css("color","white");
-                $(this).css("border-color","gray");
+                docBoxColors(this, 'midnightblue', 'white', 'gray');
             }
         });
-        $(".docBox").mouseout(function() {
+        $(".docBox").mouseout(function() { //Returns to normal color.
             if (parseInt($(this).text()) != selected) {
-                $(this).css("background-color","lightblue");
-                $(this).css("color","black");
-                $(this).css("border-color","gray");
+                docBoxColors(this, 'lightblue', 'black', 'gray');
             }
         });
         $(".docBox").click(function() {
-            $("#add").slideUp();
-            $("#submit").slideUp();
-            $("#replace").slideDown();
-            $("#cancel").slideDown();
+            addingButtons();
             selected = (parseInt($(this).text()));
             deselect();
-            $(this).css("background-color","darkred");
-            $(this).css("color","white");
-            $(this).css("border-color","black");
+            docBoxColors(this, 'darkred', 'white', 'black');
             var counter = 1;
             for(var i = 0; i < myCSV.length; i++) {
                 if (myCSV.charAt(i) == "\n") {
@@ -109,9 +116,16 @@ function add() {
         });
     }
 }
+//Changes the color of the docBox.
+function docBoxColors(element, bgColor, color, bdColor) {
+    $(element).css("background-color", bgColor);
+    $(element).css("color", color);
+    $(element).css("border-color",bdColor);
+}
 
+//Performs the replacing in myCSV. UGLY! But it works.
 function replace() {
-    resetButtons();
+    editButtons();
     var counter = 1;
     for(var i = 0; i < myCSV.length; i++) {
         if (myCSV.charAt(i) == "\n") {
@@ -122,10 +136,10 @@ function replace() {
                     toReplace += $("#toScore" + j + "").val() + ",";
                 }
                 toReplace += "\"" + $("#text").val().replace(/"/g,"'") + "\"\r\n";
-                myCSV = replaceAt(myCSV, myCSV.indexOf('\n', i - 1) + 1, myCSV.indexOf("\n", i + 1), toReplace);
+                myCSV = replaceAt(myCSV, myCSV.indexOf('\n', i - 1) + 1, myCSV.indexOf("\n", i + 1), toReplace); //Finds the ith instance of a line break, then replaces starting at that line.
 
                 selected = 0;
-                clearAllFields()
+                clearAllFields();
                 deselect();
                 return;
             }
@@ -133,6 +147,7 @@ function replace() {
     }
 }
 
+//unselects all docBoxes
 function deselect() {
     var boxes = document.getElementById('pastDocs').getElementsByTagName('*');
 
@@ -153,15 +168,17 @@ function clearAllFields() {
     $("#text").val("");
 }
 
+//Runs cancel.
 function cancelReplace() {
     deselect();
-    resetButtons();
+    editButtons();
     clearAllFields();
 }
 
+//Clears all global variables, shows/hides divs to get to start, clears divs that may have stored any information.
 function reset() {
     if (confirm("Are you sure you want to reset?")) {
-        resetButtons();
+        editButtons();
         myCSV = "";
         documentsAdded = 0;
         document.getElementById("documentAmount").innerHTML = documentsAdded;
@@ -180,6 +197,7 @@ function reset() {
     }
 }
 
+//Sets the number of text fields for number of scorers. Runs when dropdown is selected.
 function addFields(numToAdd) {
     numFields = numToAdd;
     var template1 = '<div class="fields">\n</div><input class="field form-control" id="field';
@@ -192,6 +210,7 @@ function addFields(numToAdd) {
     $("#saveFields").show();
 }
 
+//Runs when you hit save. Inserts the name of the fields into the fields.
 function saveFields() {
     var tempbool = true;
     for (var i = 1; i <= numFields; i++) {
@@ -203,7 +222,6 @@ function saveFields() {
         for (var i = 1; i <= numFields; i++) {
             fieldNames.push($("#field" + i + "").val());
             myCSV += $("#field" + i + "").val() + ",";
-            console.log(fieldNames);
         }
         var template1 = '<div class="input-group fields">\n<span class="input-group-addon">';
         var template2 = '</span>\n<input type="text" class="form-control" id="toScore';
@@ -222,6 +240,7 @@ function saveFields() {
     }
 }
 
+//Hides the things that need to be hidden at the beginning.
 $(document).ready(function() {
     $("#saveFields").hide();
     $("#workZone").hide();
