@@ -4,6 +4,9 @@
 {{> tutorial}}
 <div id="fieldNames">
     <form role="form">
+        <label> Prompt</label>
+        <input class="form-control" id="promptField" placeholder="Enter the Prompt for the Writing Submissions">
+        <br />
         <div class="btn-group" id="addFieldsSelector">
             <label>Choose number of fields to enter for each document</label>
             <br />
@@ -26,6 +29,7 @@
 </div>
 <div id="workZone" class="row">
     <form role="form">
+        <div id="promptSpace"></div>
         <label> Title</label>
         <input class="form-control" id="fileTitle" placeholder="Enter Title of CSV File">
         <br />
@@ -58,6 +62,5 @@
 
 <div id="visualization"></div>
 <div id="description"></div>
-
 {{> visualization}}
 {{> functions}}

@@ -212,13 +212,17 @@ function addFields(numToAdd) {
 
 //Runs when you hit save. Inserts the name of the fields into the fields.
 function saveFields() {
+    var prompt = $("#promptField").val();
     var tempbool = true;
     for (var i = 1; i <= numFields; i++) {
         if ($("#field" + i + "").val()== "") {
             tempbool = false;
         }
     }
-    if (tempbool == true) {
+    if ($("#promptField").val()=="") {
+        window.alert("Please enter the prompt");
+    }
+    else if (tempbool == true) {
         for (var i = 1; i <= numFields; i++) {
             fieldNames.push($("#field" + i + "").val());
             myCSV += $("#field" + i + "").val() + ",";
@@ -231,6 +235,7 @@ function saveFields() {
         for (var i = 1; i < numFields+ 1; i++) {
             temp += template1 + fieldNames[i-1] + template2 + i + template3 + fieldNames[i-1] + template4;
         }
+        document.getElementById("promptSpace").innerHTML="<strong>Your Prompt: </strong>" + prompt + "<br /> <br />";
         document.getElementById("fieldScores").innerHTML=temp;
         myCSV += "text\r\n"
         $("#fieldNames").hide();
