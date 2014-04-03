@@ -24,7 +24,8 @@ Module dependencies.
   app.set('partials', {
     head: 'partials/head',
     scripts: 'partials/scripts',
-    fieldsForCSV: 'partials/fieldsForCSV'
+    functions: 'partials/functions',
+    visualization: 'partials/visualization'
   });
 
   app.set("port", process.env.PORT || 3000);

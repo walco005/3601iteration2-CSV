@@ -1,0 +1,255 @@
+<script type="text/javascript">
+/*
+ REFRESH WARNING:
+ */
+//    window.onbeforeunload = function() {
+//        return "WARNING: Reloading the page will restart the process and you will lose all of your data!";
+//    };
+var myCSV = "";
+var documentsAdded = 0;
+var numFields;
+var fieldNames = [];
+var selected = 0;
+
+function replaceAt(str, start, end, text) {
+    return str.substring(0, start) + text + str.substring(end + 1);
+}
+
+function exportToCSV() {
+    if (documentsAdded == 0){
+        window.alert("Please add some documents");
+    }
+    else if (confirm("Do you want to download the CSV?"))
+    {
+        download($("#fileTitle").val()+".csv", myCSV);
+    }
+}
+
+function download(filename, text) {
+    var blob = new Blob([myCSV], {type: "text/csv;charset=utf-8"});
+    saveAs(blob, $("#fileTitle").val()+".csv");
+}
+
+function emptyFields() {
+    for (var i = 1; i <= numFields; i++) {
+        if ($("#toScore" + i + "").val() == "") {
+            return true;
+        }
+    }
+    if ($("#text").val() == "") {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function resetButtons() {
+    $("#cancel").slideUp();
+    $("#replace").slideUp();
+    $("#submit").slideDown();
+    $("#add").slideDown();
+}
+
+function add() {
+    if (emptyFields() == true) {
+        window.alert("Please fill all fields for the text");
+    } else {
+        for (var i = 1; i <= numFields; i++) {
+            myCSV += $("#toScore" + i + "").val() + ",";
+        }
+        myCSV += "\"" + $("#text").val().replace(/"/g,"'") + "\"\r\n";
+        documentsAdded++;
+        clearAllFields()
+        document.getElementById("documentAmount").innerHTML = documentsAdded;
+
+        document.getElementById("pastDocs").innerHTML += "<div class='docBox' id ='docBox' >" + documentsAdded + "</div>";
+
+        $(".docBox").slideDown(130);
+        $(".docBox").mouseover(function() {
+            if (parseInt($(this).text()) != selected) {
+                $(this).css("background-color","midnightblue");
+                $(this).css("color","white");
+                $(this).css("border-color","gray");
+            }
+        });
+        $(".docBox").mouseout(function() {
+            if (parseInt($(this).text()) != selected) {
+                $(this).css("background-color","lightblue");
+                $(this).css("color","black");
+                $(this).css("border-color","gray");
+            }
+        });
+        $(".docBox").click(function() {
+            $("#add").slideUp();
+            $("#submit").slideUp();
+            $("#replace").slideDown();
+            $("#cancel").slideDown();
+            selected = (parseInt($(this).text()));
+            deselect();
+            $(this).css("background-color","darkred");
+            $(this).css("color","white");
+            $(this).css("border-color","black");
+            var counter = 1;
+            for(var i = 0; i < myCSV.length; i++) {
+                if (myCSV.charAt(i) == "\n") {
+                    if (counter < (parseInt($(this).text()))) counter++;
+                    else {
+                        var index = i;
+                        for (var j = 1; j <= numFields; j++) {
+                            $("#toScore" + j + "").val(myCSV.substring(index, myCSV.indexOf(',', index + 1)));
+                            index = myCSV.indexOf(',', index + 1) + 1;
+                        }
+                        /*Note that '"' is a double quotation in two single quotes, rather than the empty string*/
+                        var text = myCSV.substring(myCSV.indexOf('"', i) + 1, myCSV.indexOf("\n", i + 1) - 2);
+                        $("#text").val(text);
+                        return;
+                    }
+                }
+            }
+        });
+    }
+}
+
+function replace() {
+    resetButtons();
+    var counter = 1;
+    for(var i = 0; i < myCSV.length; i++) {
+        if (myCSV.charAt(i) == "\n") {
+            if (counter < (selected)) counter++;
+            else {
+                var toReplace = "";
+                for (var j = 1; j <= numFields; j++) {
+                    toReplace += $("#toScore" + j + "").val() + ",";
+                }
+                toReplace += "\"" + $("#text").val().replace(/"/g,"'") + "\"\r\n";
+                myCSV = replaceAt(myCSV, myCSV.indexOf('\n', i - 1) + 1, myCSV.indexOf("\n", i + 1), toReplace);
+
+                selected = 0;
+                clearAllFields()
+                deselect();
+                return;
+            }
+        }
+    }
+}
+
+function deselect() {
+    var boxes = document.getElementById('pastDocs').getElementsByTagName('*');
+
+    for (var j = 0; j < boxes.length; j++) {
+        var e = boxes[j];
+
+        e.style.backgroundColor = 'lightblue';
+        e.style.color = 'black';
+        e.style.borderColor = 'gray';
+    }
+}
+
+//Doesn't actually clear all fields (it keeps the title) :P
+function clearAllFields() {
+    for (var k = 1; k <= numFields; k++) {
+        $("#toScore" + k + "").val("");
+    }
+    $("#text").val("");
+}
+
+function cancelReplace() {
+    deselect();
+    resetButtons();
+    clearAllFields();
+}
+
+function reset() {
+    if (confirm("Are you sure you want to reset?")) {
+        resetButtons();
+        myCSV = "";
+        documentsAdded = 0;
+        document.getElementById("documentAmount").innerHTML = documentsAdded;
+        numFields = 0;
+        fieldNames = [];
+        selected = 0;
+        $("#text").val("");
+        $("#fileTitle").val("");
+        document.getElementById("pastDocs").innerHTML = "";
+        document.getElementById("moreFields").innerHTML = "";
+        document.getElementById("fieldScores").innerHTML = "";
+        $("#moreFields").show();
+        $("#saveFields").hide();
+        $("#workZone").hide();
+        $("#fieldNames").show();
+    }
+}
+
+function addFields(numToAdd) {
+    numFields = numToAdd;
+    var template1 = '<div class="fields">\n</div><input class="field form-control" id="field';
+    var template2 = '" placeholder="Enter Field Name (Ex: Grade)">\n</div>\n';
+    var temp = "<label>Fields</label>";
+    for (var i = 1; i < numToAdd + 1; i++) {
+        temp += template1 + i + template2;
+    }
+    document.getElementById("moreFields").innerHTML=temp;
+    $("#saveFields").show();
+}
+
+function saveFields() {
+    var tempbool = true;
+    for (var i = 1; i <= numFields; i++) {
+        if ($("#field" + i + "").val()== "") {
+            tempbool = false;
+        }
+    }
+    if (tempbool == true) {
+        for (var i = 1; i <= numFields; i++) {
+            fieldNames.push($("#field" + i + "").val());
+            myCSV += $("#field" + i + "").val() + ",";
+            console.log(fieldNames);
+        }
+        var template1 = '<div class="input-group fields">\n<span class="input-group-addon">';
+        var template2 = '</span>\n<input type="text" class="form-control" id="toScore';
+        var template3 = '"placeholder="Enter ';
+        var template4 = '">\n</div>\n';
+        var temp = "<label>Scores</label>";
+        for (var i = 1; i < numFields+ 1; i++) {
+            temp += template1 + fieldNames[i-1] + template2 + i + template3 + fieldNames[i-1] + template4;
+        }
+        document.getElementById("fieldScores").innerHTML=temp;
+        myCSV += "text\r\n"
+        $("#fieldNames").hide();
+        $("#workZone").show();
+    } else {
+        window.alert("Please fill all field names");
+    }
+}
+
+$(document).ready(function() {
+    $("#saveFields").hide();
+    $("#workZone").hide();
+    $("#replace").hide();
+    $("#cancel").hide();
+
+    $("#submit").click(function() {
+        exportToCSV();
+    });
+
+    $("#add").click(function() {
+        add();
+    });
+
+    $("#reset").click(function() {
+        reset();
+    });
+
+    $("#saveFields").click(function() {
+        saveFields();
+    });
+
+    $("#replace").click(function() {
+        replace();
+    });
+
+    $("#cancel").click(function() {
+        cancelReplace();
+    });
+});
+</script>
