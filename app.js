@@ -25,7 +25,8 @@ Module dependencies.
     head: 'partials/head',
     scripts: 'partials/scripts',
     functions: 'partials/functions',
-    visualization: 'partials/visualization'
+    visualization: 'partials/visualization',
+    tutorial: 'partials/tutorial'
   });
 
   app.set("port", process.env.PORT || 3000);
