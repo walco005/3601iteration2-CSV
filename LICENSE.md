@@ -1,6 +1,8 @@
 The MIT License (MIT)
 
-Copyright (c) 2014 Brian Mitchell, Dillon Stenberg, Emma Callery, Henry Megarry, Jeremy Eberhardt, Isaac Smolund, Xavier Walcome, and Dillon Stenberg.
+Copyright (c) 2014 Brian Mitchell, Dillon Stenberg, Emma Callery, Henry
+Megarry, Jeremy Eberhardt, Isaac Smolund, Xavier Walcome, Dillon Stenberg,
+Kristin Rachor, Henry Fellows, and Josh Chapman.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
