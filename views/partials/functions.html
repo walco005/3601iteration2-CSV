@@ -148,7 +148,7 @@ function replace() {
     }
 }
 
-//unselects all docBoxes
+//Deselects all docBoxes
 function deselect() {
     var boxes = document.getElementById('pastDocs').getElementsByTagName('*');
 
@@ -236,8 +236,7 @@ function saveFields() {
         for (var i = 1; i < numFields+ 1; i++) {
             temp += template1 + fieldNames[i-1] + template2 + i + template3 + fieldNames[i-1] + template4;
         }
-        document.getElementById("promptSpace").innerHTML="<strong>Your Prompt: </strong>" + prompt +
-                "<br /><button type='button' class='btn btn-default' id='editPrompt'> \n <span class='glyphicon glyphicon-pencil'></span> Edit \n </button> <br /> <br />";
+        document.getElementById("promptSpace").innerHTML="<strong>Your Prompt: </strong>" + prompt;
         document.getElementById("fieldScores").innerHTML=temp;
         myCSV += "text\r\n"
         $("#fieldNames").hide();
@@ -249,9 +248,17 @@ function saveFields() {
 
 //Brings up a text field to edit the prompt
 function editPrompt() {
-    document.getElementById("promptSpace").innerHTML= "<label> Prompt</label>\n<input class='form-control' id='promptField' placeholder='Enter the Prompt for the Writing Submissions'>"
-    + "<br /><button type='button' class='btn btn-default' id='savePrompt'> \n <span class='glyphicon glyphicon-saved'></span> Save \n </button> <br /> <br />";
-    console.log("BOOGA BOOGA BOOGA");
+    $('#editPrompt').slideUp();
+    $('#savePrompt').slideDown();
+    document.getElementById("promptSpace").innerHTML= "<label>New Prompt: </label>\n<input class='form-control' id='promptField2' name='promptField2' placeholder='Enter the Prompt for the Writing Submissions'>";
+}
+
+//Saves the prompt entered into the text field
+function savePrompt() {
+    prompt = $("#promptField2").val();
+    $("#editPrompt").slideDown();
+    $("#savePrompt").slideUp();
+    document.getElementById("promptSpace").innerHTML= "<strong>Your Prompt: </strong>" + prompt;
 }
 
 //Hides the things that need to be hidden at the beginning.
@@ -260,6 +267,7 @@ $(document).ready(function() {
     $("#workZone").hide();
     $("#replace").hide();
     $("#cancel").hide();
+    $("#savePrompt").hide();
 
     $("#submit").click(function() {
         exportToCSV();
@@ -287,6 +295,10 @@ $(document).ready(function() {
 
     $("#editPrompt").click(function() {
         editPrompt();
+    });
+
+    $("#savePrompt").click(function() {
+        savePrompt();
     });
 });
 </script>
