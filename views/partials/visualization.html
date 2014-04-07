@@ -1,5 +1,5 @@
 <!--<button onClick="changeData()">Change Data</button>-->
-
+<div id="visDiv">
 <script>
     graphIt = function(){
         var gradPie={};
@@ -63,12 +63,13 @@
         {label:"Delux", value:293, color:"#990099"}
     ];
 
-    d3.select("body").append("svg").attr("width", 400).attr("height", 400)
-            .append("g").attr("id","salespie");
+    d3.select("body").append("svg").attr("width", window.screen.width).attr("height", 600)
+            .append("g").attr("id","gradePie");
 
-    gradPie.draw("salespie", salesData, 200, 200, 160);
+    gradPie.draw("gradePie", salesData, window.screen.width/2, 260, 160);
 
     function changeData(){
         gradPie.transition(salesData.map(function(d){ d.value=1000*Math.random(); return d;}));
     }
 </script>
+</div>
