@@ -241,6 +241,7 @@ function saveFields() {
         myCSV += "text\r\n"
         $("#fieldNames").hide();
         $("#workZone").show();
+        $("#visualization").show();
     } else {
         window.alert("Please fill all field names");
     }
@@ -268,6 +269,7 @@ $(document).ready(function() {
     $("#replace").hide();
     $("#cancel").hide();
     $("#savePrompt").hide();
+    $("#visualization").hide();
 
     $("#submit").click(function() {
         exportToCSV();

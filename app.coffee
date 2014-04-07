@@ -20,7 +20,7 @@ app.set 'partials',
   tutorial: 'partials/tutorial'
 
 # all environments
-app.set "port", process.env.PORT or 3000
+app.set "port", process.env.PORT or 3009
 app.set "views", path.join(__dirname, "views")
 app.engine "html", require("hogan-express")
 app.set "view engine", "html"

@@ -1,22 +1,73 @@
+<button onClick="changeData()">Change Data</button>
+
+<script>
+    !function(){
+        var gradPie={};
+
+        var pie = d3.layout.pie().sort(null).value(function(d) {return d.value;});
+        var arc = d3.svg.arc();
+        var path;
+
+        createGradients = function(defs, colors, r){
+            var gradient = defs.selectAll('.gradient')
+                    .data(colors).enter().append("radialGradient")
+                    .attr("id", function(d,i){return "gradient" + i;})
+                    .attr("gradientUnits", "userSpaceOnUse")
+                    .attr("cx", "0").attr("cy", "0").attr("r", r).attr("spreadMethod", "pad");
+
+            gradient.append("stop").attr("offset", "0%").attr("stop-color", function(d){ return d;});
+
+            gradient.append("stop").attr("offset", "30%")
+                    .attr("stop-color",function(d){ return d;})
+                    .attr("stop-opacity", 1);
+
+            gradient.append("stop").attr("offset", "70%")
+                    .attr("stop-color",function(d){ return "black";})
+                    .attr("stop-opacity", 1);
+        };
+
+        gradPie.draw = function(id, data, cx, cy, r){
+            var gPie = d3.select("#"+id).append("g").attr("transform", "translate(" + cx + "," + cy + ")");
+
+            arc.outerRadius(r);
+
+            createGradients(gPie.append("defs"), data.map(function(d){ return d.color; }), 2.5*r);
+
+            path = gPie.selectAll("path").data(pie(data))
+                    .enter().append("path").attr("fill", function(d,i){ return "url(#gradient"+ i+")";})
+                    .attr("d", arc).each(function(d) { this._current = d; });
+        };
+
+        gradPie.transition = function (data) {
+            path.data(pie(data)).transition().duration(750).attrTween("d", arcTween);
+        };
+
+        function arcTween(a) {
+            var i = d3.interpolate(this._current, a);
+            this._current = i(0);
+            return function(t) { return arc(i(t));  };
+        }
+
+        this.gradPie = gradPie;
+    }();
+</script>
+
 <script>
 
-    
+    var salesData=[
+        {label:"Basic", value:324, color:"#3366CC"},
+        {label:"Plus", value:560, color:"#DC3912"},
+        {label:"Lite", value:246, color:"#FF9900"},
+        {label:"Elite", value:438, color:"#109618"},
+        {label:"Delux", value:293, color:"#990099"}
+    ];
 
-    Morris.Donut({
-    element: 'myfirstchart',
-    data: [
-        {label: "Number of 0 papers: ", value: grades[0]},
-        {label: "Number of 1 papers: ", value: grades[1]},
-        {label: "Number of 2 papers: ", value: grades[2]},
-        {label: "Number of 3 papers: ", value: grades[3]}
-    ],
-    labelColor: 'black',
-    colors: [
-        '#CB5DF5',
-        '#8451FF',
-        '#6375E8',
-        '#60B8FF'
-    ]
-});
+    d3.select("body").append("svg").attr("width", 400).attr("height", 400)
+            .append("g").attr("id","salespie");
 
+    gradPie.draw("salespie", salesData, 200, 200, 160);
+
+    function changeData(){
+        gradPie.transition(salesData.map(function(d){ d.value=1000*Math.random(); return d;}));
+    }
 </script>
