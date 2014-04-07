@@ -61,9 +61,11 @@
     <p style="display:inline;" id="documentAmount">0</p>
     <br />
     <div id="pastDocs"></div>
+    <div id="visualization">
+        <button onClick="changeData()">Change Data</button>
+        {{> visualization}}
+    </div>
 </div>
-<div id="visualization">
-    {{> visualization}}
-</div>
+
 <div id="description"></div>
 {{> functions}}

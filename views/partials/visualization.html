@@ -1,7 +1,7 @@
-<button onClick="changeData()">Change Data</button>
+<!--<button onClick="changeData()">Change Data</button>-->
 
 <script>
-    !function(){
+    graphIt = function(){
         var gradPie={};
 
         var pie = d3.layout.pie().sort(null).value(function(d) {return d.value;});
@@ -50,9 +50,10 @@
 
         this.gradPie = gradPie;
     }();
+    graphIt();
 </script>
 
-<script>
+<script id="graphScript">
 
     var salesData=[
         {label:"Basic", value:324, color:"#3366CC"},
