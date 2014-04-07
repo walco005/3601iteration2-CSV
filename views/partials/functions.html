@@ -1,4 +1,6 @@
+{{> visualization}}
 <script type="text/javascript">
+
 /*
  REFRESH WARNING:
  */
@@ -41,11 +43,7 @@ function emptyFields() {
             return true;
         }
     }
-    if ($("#text").val() == "") {
-        return true;
-    } else {
-        return false;
-    }
+    return ($("#text").val() == "");
 }
 
 //Hides cancel and replace, shows submit and add.
@@ -174,6 +172,7 @@ function cancelReplace() {
     deselect();
     editButtons();
     clearAllFields();
+    selected=0;
 }
 
 //Clears all global variables, shows/hides divs to get to start, clears divs that may have stored any information.
@@ -210,7 +209,6 @@ function addFields(numToAdd) {
     document.getElementById("moreFields").innerHTML=temp;
     $("#saveFields").show();
 }
-
 //Runs when you hit save. Inserts the name of the fields into the fields.
 function saveFields() {
     var prompt = $("#promptField").val();
@@ -268,8 +266,8 @@ $(document).ready(function() {
     $("#workZone").hide();
     $("#replace").hide();
     $("#cancel").hide();
-    $("#savePrompt").hide();
-    $("#gradePie").hide();
+    $("#savePrompt").hide();/*
+    $("#gradePie").hide();*/
 
     $("#submit").click(function() {
         exportToCSV();
@@ -302,5 +300,8 @@ $(document).ready(function() {
     $("#savePrompt").click(function() {
         savePrompt();
     });
+    $("#changeData").click(function() {
+        ourChangeData();
+    })
 });
 </script>

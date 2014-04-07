@@ -3,7 +3,6 @@
 <script>
     graphIt = function(){
         var gradPie={};
-
         var pie = d3.layout.pie().sort(null).value(function(d) {return d.value;});
         var arc = d3.svg.arc();
         var path;
@@ -50,17 +49,12 @@
 
         this.gradPie = gradPie;
     }();
-    graphIt();
-</script>
-
-<script id="graphScript">
-
     var salesData=[
-        {label:"Basic", value:324, color:"#3366CC"},
-        {label:"Plus", value:560, color:"#DC3912"},
-        {label:"Lite", value:246, color:"#FF9900"},
-        {label:"Elite", value:438, color:"#109618"},
-        {label:"Delux", value:293, color:"#990099"}
+        {label:"A", value:1, color:"#3366CC"},
+        {label:"B", value:1, color:"#DC3912"},
+        {label:"C", value:1, color:"#FF9900"},
+        {label:"D", value:1, color:"#109618"},
+        {label:"F", value:1, color:"#990099"}
     ];
 
     d3.select("body").append("svg").attr("width", window.screen.width).attr("height", 600)
@@ -70,6 +64,18 @@
 
     function changeData(){
         gradPie.transition(salesData.map(function(d){ d.value=1000*Math.random(); return d;}));
+    }
+    function ourChangeData(){
+
+        gradPie.transition(salesData.map(function(d){
+            if (d.label == "A") {
+                var str = document.getElementById("documentAmount").innerHTML;
+                console.log(d.value);
+                d.value = 1000*Math.random();//parseInt(str.charAt(str.length - 1));
+                console.log(d.value);
+                return d;
+            }
+        }));
     }
 </script>
 </div>
